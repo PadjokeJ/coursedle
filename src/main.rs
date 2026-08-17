@@ -145,9 +145,28 @@ async fn get_courses(link: &str) -> HashMap<String, Course> {
         .filter(|n| n.get("class").unwrap().eq("line-down"))
         .map(|n| n.children().collect::<Vec<_>>()[0].clone())
         .map(|n| Course {
-            title: get_data(&n, "cours-name"),
-            link: get_data(&n, "cours-name"),
-            course_id: get_data(&n, "cours-info").split(" / ").nth(0).unwrap().to_string(),
+            title: n
+                .tag("div")
+                .find_all()
+                .filter(|n| match n.get("class") {
+                    None => false,
+                    Some(n) => n.eq("cours-name"),
+                }).filter_map(|n| n.tag("a").find())
+                .fold(String::new(), |a, x| format!("{}{}", a, x.text())),
+            link:  n
+                .tag("div")
+                .find_all()
+                .filter(|n| match n.get("class") {
+                    None => false,
+                    Some(n) => n.eq("cours-name"),
+                }).filter_map(|n| n.tag("a").find())
+                .map(|n| n.get("href").unwrap())
+                .fold(String::new(), |a, x| format!("{}{}", a, x)),
+            course_id: get_data(&n, "cours-info")
+                .split(" / ")
+                .nth(0)
+                .unwrap()
+                .to_string(),
             profs: n
                 .tag("div")
                 .find_all()
@@ -164,8 +183,13 @@ async fn get_courses(link: &str) -> HashMap<String, Course> {
             },
             session: Session::from_string(&get_data(&n, "exam-text")),
             semester: Semester::from_string(Semester::find_string(&n)),
-            section: get_data(&n, "cours-info").split(" / ").nth(1).unwrap().to_string(),
+            section: get_data(&n, "cours-info")
+                .split(" / ")
+                .nth(1)
+                .unwrap()
+                .to_string(),
         })
+        .filter(|c| !c.course_id.is_empty() && !c.title.is_empty())
         .map(|c| (c.course_id.clone(), c))
         .collect::<HashMap<String, Course>>()
 }
@@ -189,8 +213,7 @@ fn get_data(node: &Rc<Node>, clazz: &str) -> String {
         .fold(String::new(), |a, x| format!("{}{}", a, x.text()))
 }
 
-#[tokio::main]
-async fn main() {
+async fn parse() {
     let paths = [/*CMS, */ PROP, BACH, MAST];
     let mut hm = HashMap::new();
     for i in paths {
@@ -206,5 +229,11 @@ async fn main() {
         output,
         "{}",
         serde_json::to_string(&AllData { courses: hm }).unwrap()
-    ).unwrap();
+    )
+    .unwrap();
+}
+
+#[tokio::main]
+async fn main() {
+    parse().await;
 }
