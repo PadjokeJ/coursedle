@@ -124,6 +124,7 @@ struct Course {
 #[derive(Serialize, Deserialize)]
 struct AllData {
     courses: HashMap<String, Course>,
+    aliases: HashMap<String, String>
 }
 
 async fn get_sections(link: &str) -> Vec<String> {
@@ -225,10 +226,13 @@ async fn parse() {
         }
     }
     let mut output = File::create("data.json").unwrap();
+
+    let aliases = hm.iter().map(|c| (c.1.title.clone(), c.0.clone())).collect();
+
     write!(
         output,
         "{}",
-        serde_json::to_string(&AllData { courses: hm }).unwrap()
+        serde_json::to_string(&AllData { courses: hm, aliases: aliases }).unwrap()
     )
     .unwrap();
 }
