@@ -6,11 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coursedle | Guess an EPFL course daily!</title>
     <link rel="stylesheet" href="/static/style.css">
-    <script src="/static/coursedle.js"></script>
 </head>
 
 <body>
     <div class="centering">
+        <div id="guesser">
+            <input type="text" id="guess_input">
+            <select name="course_id" id="course_id"></select>
+            <a href="#" id="submit_guess">Guess !</a>
+        </div>
         <table id="guesses">
             <tbody id="tbody">
                 <tr id="guess_title">
@@ -20,19 +24,10 @@
                     <th>Credits</th>
                     <th>Semester</th>
                     <th>Section</th>
-                    <th>Exam session</th>
-                </tr>
-                <tr class="guess">
-                    <td>ID</td>
-                    <td>Name</td>
-                    <td>Language</td>
-                    <td>Credits</td>
-                    <td>Semester</td>
-                    <td>Section</td>
-                    <td>Exam session</td>
                 </tr>
             </tbody>
         </table>
     </div>
+    <script src="/static/coursedle.js"></script>
 </body>
 </html>

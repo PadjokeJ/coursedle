@@ -13,6 +13,13 @@ body {
     margin: 0;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+}
+
+#guesser,
+#guesses {
+    box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 20px 0;
+    transition: all 0.5s ease;
 }
 
 #guesses {
@@ -22,6 +29,20 @@ body {
     overflow: hidden;
 }
 
+#guesser {
+    padding: 10px;
+    background-color: silver;
+    margin: 20px;
+    border: solid 3px;
+    border-radius: 20px;
+}
+
+#guess_input {
+    border-radius: 10px;
+    border: gray solid 2px;
+    padding: 5px;
+    margin-right: 20px;
+}
 
 #guess_title {
     background-color: silver;
@@ -31,7 +52,8 @@ body {
     margin: 0;
 }
 
-td, th {
+td,
+th {
     padding: 20px;
 }
 
@@ -45,4 +67,15 @@ th {
     border: solid;
     border-width: 0 1px;
     border-color: gray;
+}
+
+.correct {
+    background-color: #87ff87;
+    box-shadow: #87ff87 0 0 10px 2px;
+    z-index: 999;
+    position: relative;
+}
+
+.wrong {
+    background-color: #ff8787;
 }
