@@ -1,4 +1,4 @@
-use rocket::fs::{FileServer, NamedFile};
+use rocket::{Build, Rocket, fs::{FileServer, NamedFile}};
 
 #[macro_use] extern crate rocket;
 
@@ -13,11 +13,15 @@ fn api_course(id: String) -> &'static str {
   "hello"
 }*/
 
-#[launch]
-fn rocket() -> _ {
+//#[launch]
+fn rocket() -> Rocket<Build> {
     println!("Starting rocket");
 
     rocket::build()
     .mount("/", routes![index])
     .mount("/static", FileServer::from("static"))
+}
+
+fn main() {
+    println!("test")
 }
