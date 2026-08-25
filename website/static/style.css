@@ -131,3 +131,19 @@ th {
 .hidden {
     display: none;
 }
+
+footer {
+    position: absolute;
+    bottom: 0;
+
+    width: 100%;
+
+    z-index: 9999;
+
+    background-color: #e6e6e6;
+    text-align: center;
+    font-weight: 700;
+    color: #707070;
+    padding: 5px 0;
+    font-size: 0.8em;
+}
