@@ -65,8 +65,14 @@ function createRow(course, correct) {
 
     for (let i = 0; i < 6; i++) {
         let td = document.createElement("td");
-        td.innerText = course[TYPE[i]];
-        if (course[TYPE[i]] == correct[TYPE[i]]) {
+        let n = course[TYPE[i]];
+        console.log(!Number.isNaN(n));
+        if (Number.isInteger(n)) {
+            n += (Number(n) == Number(correct[TYPE[i]])) ? "" : (Number(n) < Number(correct[TYPE[i]])) ? "⬆️": "⬇️";
+        }
+
+        td.innerText = n;
+        if (n == correct[TYPE[i]]) {
             progress += "🟩"
             td.classList.add("correct");
         } else {
