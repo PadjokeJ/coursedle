@@ -7,6 +7,8 @@ const TYPE = [
     "section"
 ];
 
+let guesses = 0;
+
 // Source - https://stackoverflow.com/a/47593316
 // Posted by bryc, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-08-23, License - CC BY-SA 4.0
@@ -27,12 +29,15 @@ function sfc32(a, b, c, d) {
 // END paste
 
 function createRow(course, correct) {
+    guesses += 1;
     let tbody = document.getElementById("tbody");
 
     let row = document.createElement("tr");
     row.classList.add("guess");
 
     row.style.transition = "all 0.5s ease";
+
+    let yippee = true;
 
     for (let i = 0; i < 6; i++) {
         let td = document.createElement("td");
@@ -41,8 +46,21 @@ function createRow(course, correct) {
             td.classList.add("correct");
         } else {
             td.classList.add("wrong");
+            yippee = false;
         }
         row.appendChild(td);
+    }
+
+    if (yippee) {
+        let v = document.getElementById("victory_screen");
+        v.classList.remove("hidden");
+
+        let a = document.getElementById("course_link");
+        a.innerText = correct.title;
+        a.setAttribute("href", `https://edu.epfl.ch${correct.link}`);
+        
+        let g = document.getElementById("num_guesses");
+        g.innerText = guesses;
     }
 
     tbody.appendChild(row);
@@ -102,8 +120,11 @@ gue.addEventListener("click", async () => {
 });
 
 async function courseToday() {
-    let n = new Date().getDate() + new Date().getMonth() * 100 + new Date().getYear() * 10000;
-    let r = sfc32(n, n, n, n);
+    let r = sfc32(((new Date().getDay() - 2) / 31) * 2 ** 32., (new Date().getMonth() / 31) * 2  ** 32., (new Date().getUTCFullYear() / 3000) * 2 ** 32., 2**32);
+
+    for (let i = 0; i < 10; i++) {
+        r();
+    }
 
     let data = await DATA;
 
