@@ -1,0 +1,13 @@
+[default]
+address = "0.0.0.0"
+limits = { form = "64 kB", json = "1 MiB" }
+
+[debug]
+port = 8003
+
+[nyc]
+port = 8003
+
+[release]
+port = 8003
+ip_header = false

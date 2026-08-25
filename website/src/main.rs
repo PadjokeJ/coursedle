@@ -1,12 +1,12 @@
-use rocket::fs::FileServer;
-use rocket_dyn_templates::{Template, context};
+use rocket::fs::{FileServer, NamedFile};
 
 #[macro_use] extern crate rocket;
 
 #[get("/")]
-fn index() -> Template {
-    Template::render("index", context! {})
+async fn index() -> NamedFile {
+    NamedFile::open("templates/index.html").await.unwrap()
 }
+
 /* 
 #[get("/id/<id>")]
 fn api_course(id: String) -> &'static str {
@@ -17,5 +17,5 @@ fn api_course(id: String) -> &'static str {
 fn rocket() -> _ {
     rocket::build()
     .mount("/", routes![index])
-    .mount("/static", FileServer::from("/static"))
+    .mount("/static", FileServer::from("static"))
 }
