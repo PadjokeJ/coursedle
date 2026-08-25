@@ -24,7 +24,7 @@ RUN chmod 777 /app
 COPY --from=build /build/main ./main
 
 COPY --from=build /build/static ./static/
-COPY --from=build /build/Rocket.toml ./static/
+COPY --from=build /build/Rocket.toml .
 COPY --from=build /build/templates ./templates/
 
 ENV ROCKET_ADDRESS=0.0.0.0
