@@ -13,15 +13,11 @@ fn api_course(id: String) -> &'static str {
   "hello"
 }*/
 
-//#[launch]
+#[launch]
 fn rocket() -> Rocket<Build> {
-    println!("Starting rocket");
+    println!("Starting rocket!");
 
     rocket::build()
     .mount("/", routes![index])
     .mount("/static", FileServer::from("static"))
-}
-
-fn main() {
-    println!("test")
 }
