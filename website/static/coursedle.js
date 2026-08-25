@@ -7,7 +7,25 @@ const TYPE = [
     "section"
 ];
 
+const FIRST_DAY = new Date(Date.parse("2026-08-25"));
+
+const TODAY = function() {
+    let a = new Date();
+    a.setHours(FIRST_DAY.getHours()); // account for utc timezones hour shifts
+    a.setMinutes(0);
+    a.setSeconds(0);
+    a.setMilliseconds(0);
+
+    return a;
+}();
+
 let guesses = 0;
+
+let progress = "";
+
+let won = false;
+
+let seen = [];
 
 // Source - https://stackoverflow.com/a/47593316
 // Posted by bryc, modified by community. See post 'Timeline' for change history
@@ -29,6 +47,12 @@ function sfc32(a, b, c, d) {
 // END paste
 
 function createRow(course, correct) {
+    if (seen.includes(course.course_id)) {
+        return;
+    }
+
+    seen.push(course.course_id);
+
     guesses += 1;
     let tbody = document.getElementById("tbody");
 
@@ -43,13 +67,17 @@ function createRow(course, correct) {
         let td = document.createElement("td");
         td.innerText = course[TYPE[i]];
         if (course[TYPE[i]] == correct[TYPE[i]]) {
+            progress += "🟩"
             td.classList.add("correct");
         } else {
+            progress += "🟥"
             td.classList.add("wrong");
             yippee = false;
         }
         row.appendChild(td);
     }
+
+    progress += "<br>"
 
     if (yippee) {
         let v = document.getElementById("victory_screen");
@@ -61,6 +89,15 @@ function createRow(course, correct) {
         
         let g = document.getElementById("num_guesses");
         g.innerText = guesses;
+
+        document.getElementById("progress").innerHTML = progress;
+
+        document.getElementById("day").innerText = Math.round((FIRST_DAY - TODAY) / (1000 * 60 * 60 * 24));
+
+        inp.disabled = true;
+        sel.disabled = true;
+
+        won = true;
     }
 
     tbody.appendChild(row);
@@ -89,7 +126,7 @@ inp.addEventListener("keyup", async () => {
 
     let lwc = inp.value.toLowerCase();
 
-    if (lwc.length < 4) return;
+    if (lwc.length < 3) return;
 
     for (const id in dc) {
         let course = dc[id];
@@ -105,22 +142,37 @@ inp.addEventListener("keyup", async () => {
         opt.innerText = `${course.title} - ${course.course_id}`;
         sel.appendChild(opt);
     }
+
+    if (event.key == "Enter") {
+        await check_correct();
+    }
 });
 
 sel.addEventListener("input", () => {
     inp.value = sel.value;
 })
 
-gue.addEventListener("click", async () => {
+async function check_correct() {
+    if (won) {
+        return;
+    }
+
     let data = await DATA;
 
     let correct = await courseToday();
 
     createRow(data.courses[sel.value], data.courses[correct]);
+
+    sel.innerHTML = '';
+    inp.value = '';
+}
+
+gue.addEventListener("click", async () => {
+    await check_correct();
 });
 
 async function courseToday() {
-    let r = sfc32(((new Date().getDay() - 2) / 31) * 2 ** 32., (new Date().getMonth() / 31) * 2  ** 32., (new Date().getUTCFullYear() / 3000) * 2 ** 32., 2**32);
+    let r = sfc32(((TODAY.getDay() - 2) / 31) * 2 ** 32., (TODAY.getMonth() / 31) * 2  ** 32., (TODAY.getUTCFullYear() / 3000) * 2 ** 32., 2**32);
 
     for (let i = 0; i < 10; i++) {
         r();
