@@ -9,7 +9,7 @@ const TYPE = [
 
 const FIRST_DAY = new Date(Date.parse("2026-08-25"));
 
-const TODAY = function() {
+const TODAY = function () {
     let a = new Date();
     a.setHours(FIRST_DAY.getHours()); // account for utc timezones hour shifts
     a.setMinutes(0);
@@ -32,16 +32,16 @@ let seen = [];
 // Retrieved 2026-08-23, License - CC BY-SA 4.0
 
 function sfc32(a, b, c, d) {
-  return function() {
-    a |= 0; b |= 0; c |= 0; d |= 0;
-    let t = (a + b | 0) + d | 0;
-    d = d + 1 | 0;
-    a = b ^ b >>> 9;
-    b = c + (c << 3) | 0;
-    c = (c << 21 | c >>> 11);
-    c = c + t | 0;
-    return (t >>> 0) / 4294967296;
-  }
+    return function () {
+        a |= 0; b |= 0; c |= 0; d |= 0;
+        let t = (a + b | 0) + d | 0;
+        d = d + 1 | 0;
+        a = b ^ b >>> 9;
+        b = c + (c << 3) | 0;
+        c = (c << 21 | c >>> 11);
+        c = c + t | 0;
+        return (t >>> 0) / 4294967296;
+    }
 }
 
 // END paste
@@ -68,7 +68,7 @@ function createRow(course, correct) {
         let n = course[TYPE[i]];
         console.log(!Number.isNaN(n));
         if (Number.isInteger(n)) {
-            n += (Number(n) == Number(correct[TYPE[i]])) ? "" : (Number(n) < Number(correct[TYPE[i]])) ? "⬆️": "⬇️";
+            n += (Number(n) == Number(correct[TYPE[i]])) ? "" : (Number(n) < Number(correct[TYPE[i]])) ? "⬆️" : "⬇️";
         }
 
         td.innerText = n;
@@ -92,7 +92,7 @@ function createRow(course, correct) {
         let a = document.getElementById("course_link");
         a.innerText = correct.title;
         a.setAttribute("href", `https://edu.epfl.ch${correct.link}`);
-        
+
         let g = document.getElementById("num_guesses");
         g.innerText = guesses;
 
@@ -178,7 +178,7 @@ gue.addEventListener("click", async () => {
 });
 
 async function courseToday() {
-    let r = sfc32(((TODAY.getDay() - 2) / 31) * 2 ** 32., (TODAY.getMonth() / 31) * 2  ** 32., (TODAY.getUTCFullYear() / 3000) * 2 ** 32., 2**32);
+    let r = sfc32(((TODAY.getDay() - 2) / 31) * 2 ** 32., (TODAY.getMonth() / 31) * 2 ** 32., (TODAY.getUTCFullYear() / 3000) * 2 ** 32., 2 ** 32);
 
     for (let i = 0; i < 10; i++) {
         r();
@@ -192,3 +192,14 @@ async function courseToday() {
 
     return Object.keys(data.courses)[i];
 }
+
+document.getElementById("share").addEventListener("click", () => {
+    let t = document.getElementById("progress").innerText;
+
+    t = "coursedle.EPFL.cc day #" + document.getElementById("day").innerText + "\n" + t;
+
+    navigator.clipboard.writeText(t);
+
+    // Alert the copied text
+    alert("Copied to clipboard!");
+})

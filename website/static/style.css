@@ -68,7 +68,7 @@ select {
     text-transform: uppercase;
 }
 
-#submit_guess {
+#submit_guess, #share {
     background-color: red;
     color: white;
     font-weight: 700;
