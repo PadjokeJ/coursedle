@@ -1,9 +1,12 @@
 :root {
     --border: #d5d5d5;
+    --bg: #f4f4f4;
 }
 
 html,
 body {
+    font-family: SuisseIntl, Arial, sans-serif !important;
+
     width: 100%;
     height: 100%;
     margin: 0;
@@ -22,13 +25,12 @@ body {
 
 #guesser,
 #guesses {
-    box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 20px 0;
     transition: all 0.5s ease;
 }
 
 #guesses {
-    border: solid 3px;
-    border-radius: 20px;
+    border: var(--border) solid 1px;
+
     border-spacing: 0;
     overflow: hidden;
 
@@ -36,28 +38,46 @@ body {
 }
 
 #guesser {
-    padding: 10px;
-    background-color: silver;
+    background-color: var(--bg);
     margin: 20px;
-    border: solid 3px;
-    border-radius: 20px;
+    border: var(--border) solid 1px;
+    display: flex;
 }
 
 #guess_input {
-    border-radius: 10px;
-    border: gray solid 2px;
-    padding: 5px;
-    margin-right: 20px;
+    border: var(--border) solid 1px;
+    padding: 15px;
+}
+
+select {
+    display: block;
+    border: var(--border) solid 1px;
+    background-color: white;
 }
 
 #guess_title {
-    background-color: silver;
+    background-color: var(--bg);
 
-    border: solid gray 0 0 2px 0;
+    border: solid var(--border) 0 0 1px 0;
     padding: 5px;
     margin: 0;
 
+    font-size: .6875rem;
+    font-weight: 700;
+    color: #707070;
     text-transform: uppercase;
+}
+
+#submit_guess {
+    background-color: red;
+    color: white;
+    font-weight: 700;
+
+    display: block;
+    align-content: center;
+    padding: 15px;
+
+    text-decoration: none;
 }
 
 td,
@@ -68,18 +88,17 @@ th {
 td {
     border: solid;
     border-width: 1px;
-    border-color: silver;
+    border-color: var(--border);
 }
 
 th {
     border: solid;
     border-width: 0 1px;
-    border-color: gray;
+    border-color: var(--border);
 }
 
 .correct {
     background-color: #87ff87;
-    box-shadow: #87ff87 0 0 10px 2px;
     z-index: 9;
     position: relative;
 }
