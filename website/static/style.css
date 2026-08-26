@@ -16,6 +16,8 @@ body {
 body {
     position: absolute;
     top:0;
+    min-height: 100%;
+    height:auto;
 }
 
 .centering {

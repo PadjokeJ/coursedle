@@ -46,6 +46,40 @@ function sfc32(a, b, c, d) {
 
 // END paste
 
+function lowOrHigh(n1, n2) {
+    return (Number(n1) == Number(n2)) ? "" : (Number(n1) < Number(n2)) ? "⬆️" : "⬇️"
+}
+
+function compare(cat1, cat2) {
+    console.log(`comparing ${cat1} and ${cat2}`)
+
+    if (Number.isInteger(cat1)) {
+        console.log("is number")
+
+        return lowOrHigh(cat1, cat2);
+    }
+
+    if (cat1.startsWith("BA") || cat1.startsWith("MA")) {
+        console.log("is start with")
+        
+        if (cat1.slice(0, 2) == cat2.slice(0, 2)) {
+            let cats1 = cat1.slice(2);
+            let cats2 = cat2.slice(2);
+
+            return lowOrHigh(cats1, cats2);
+        }
+
+        if (cat1.startsWith("BA") && cat2.startsWith("MA")) {
+            return "⬆️";
+        } 
+
+        return "⬇️";
+    } 
+    
+
+    return "";
+}
+
 function createRow(course, correct) {
     if (seen.includes(course.course_id)) {
         return;
@@ -67,9 +101,8 @@ function createRow(course, correct) {
         let td = document.createElement("td");
         let n = course[TYPE[i]];
         console.log(!Number.isNaN(n));
-        if (Number.isInteger(n)) {
-            n += (Number(n) == Number(correct[TYPE[i]])) ? "" : (Number(n) < Number(correct[TYPE[i]])) ? "⬆️" : "⬇️";
-        }
+
+        n += compare(n, correct[TYPE[i]]);
 
         td.innerText = n;
         if (n == correct[TYPE[i]]) {
