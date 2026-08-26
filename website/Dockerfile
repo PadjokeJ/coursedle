@@ -7,13 +7,15 @@ WORKDIR /build
 COPY Cargo.toml Cargo.lock ./
 RUN mkdir src && echo "fn main() {}" > src/main.rs
 RUN cargo build --release
-RUN rm -rf src
+RUN rm -rf src target/release/$pkg
 
-COPY . .
+COPY src src
 
 RUN set -eux; \
     cargo build --release; \
     objcopy --compress-debug-sections target/release/$pkg ./main
+
+COPY . .
 
 FROM alpine:3.23
 
