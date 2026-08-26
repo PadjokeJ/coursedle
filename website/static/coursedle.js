@@ -131,7 +131,7 @@ function createRow(course, correct) {
 
         document.getElementById("progress").innerHTML = progress;
 
-        document.getElementById("day").innerText = Math.round((FIRST_DAY - TODAY) / (1000 * 60 * 60 * 24));
+        document.getElementById("day").innerText = Math.round((TODAY - FIRST_DAY) / (1000 * 60 * 60 * 24));
 
         inp.disabled = true;
         sel.disabled = true;
@@ -143,10 +143,16 @@ function createRow(course, correct) {
 }
 
 function getData() {
+    const args = window.location.search;
+    const params = new URLSearchParams(args);
+
     return fetch("/static/data.json")
         .then((response) => response.json())
         .then((json) => {
-            return json;
+            if (!params.has("section")) {
+                return json;
+            }
+            
         });
 }
 
