@@ -13,10 +13,15 @@ body {
     padding: 0;
 }
 
+body {
+    position: absolute;
+    top:0;
+}
+
 .centering {
     display: flex;
     width: 100%;
-    min-height: 100%;
+    min-height: calc(100% - 100px);
     margin: 0;
     justify-content: center;
     align-items: center;
@@ -155,7 +160,5 @@ footer {
     font-size: 2.5em;
 
     text-align: center;
-    position: absolute;
-    top: 0;
     width: 100%;
 }
