@@ -153,6 +153,25 @@ function getData() {
                 return json;
             }
             
+            let newdat = {
+                "courses": {}
+            };
+
+            let section = params.get("section");
+            let added = false;
+
+            for (const id in json.courses) {
+                if (json.courses[id].section === section) {
+                    newdat.courses[id] = json.courses[id];
+                    added = true;
+                }
+            }
+
+            if (added) {
+                return newdat;
+            }
+
+            return json;
         });
 }
 
@@ -198,6 +217,10 @@ sel.addEventListener("input", () => {
 })
 
 async function check_correct() {
+    if (sel.value === '') {
+        return;
+    }
+
     if (won) {
         return;
     }
@@ -205,6 +228,8 @@ async function check_correct() {
     let data = await DATA;
 
     let correct = await courseToday();
+
+    
 
     createRow(data.courses[sel.value], data.courses[correct]);
 
@@ -235,7 +260,16 @@ async function courseToday() {
 document.getElementById("share").addEventListener("click", () => {
     let t = document.getElementById("progress").innerText;
 
-    t = "coursedle.EPFL.cc day #" + document.getElementById("day").innerText + "\n" + t;
+    const args = window.location.search;
+    const params = new URLSearchParams(args);
+
+    let p = "";
+
+    if (params.has("section")) {
+        p = "?" + new URLSearchParams({ section: params.get("section") }).toString();
+    }
+
+    t = "coursedle.EPFL.cc" + p + " day #" + document.getElementById("day").innerText + "\n" + t;
 
     navigator.clipboard.writeText(t);
 
