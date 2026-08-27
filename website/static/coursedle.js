@@ -51,17 +51,11 @@ function lowOrHigh(n1, n2) {
 }
 
 function compare(cat1, cat2) {
-    console.log(`comparing ${cat1} and ${cat2}`)
-
     if (Number.isInteger(cat1)) {
-        console.log("is number")
-
         return lowOrHigh(cat1, cat2);
     }
 
     if (cat1.startsWith("BA") || cat1.startsWith("MA")) {
-        console.log("is start with")
-        
         if (cat1.slice(0, 2) == cat2.slice(0, 2)) {
             let cats1 = cat1.slice(2);
             let cats2 = cat2.slice(2);
@@ -100,7 +94,6 @@ function createRow(course, correct) {
     for (let i = 0; i < 6; i++) {
         let td = document.createElement("td");
         let n = course[TYPE[i]];
-        console.log(!Number.isNaN(n));
 
         n += compare(n, correct[TYPE[i]]);
 
